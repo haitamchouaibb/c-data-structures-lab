@@ -97,3 +97,20 @@ void QUEUEfree(QUEUE q){
     free(q);
 }
 
+void QUEUEdisplay(QUEUE q){
+    link current;
+
+    for(current = q->head; current != NULL; current = current ->next){
+        printf("Current item %d\n", current->val);
+    }
+}
+
+int QUEUEsize(QUEUE q){
+    link current;
+    int count = 0;
+    for(current = q->head; current != NULL;current = current->next){
+        count++;
+    }
+    printf("Total elements found in Queue : %d\n", count);
+    return count;
+}

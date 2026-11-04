@@ -7,6 +7,7 @@ int main() {
     QUEUE q = QUEUEinit(5);
 
     QUEUEput(q,10);
-
-    printf("Queue : %d\n", QUEUEget(q));
+    QUEUEput(q,20);
+    QUEUEdisplay(q);
+    QUEUEsize(q);
 }

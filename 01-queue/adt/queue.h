@@ -9,5 +9,7 @@ int QUEUEempty();
 void QUEUEput(QUEUE q, Item val);
 Item QUEUEget(QUEUE q);
 void QUEUEfree(QUEUE q);
+void QUEUEdisplay(QUEUE q);
+int QUEUEsize(QUEUE q);
 
 #endif
