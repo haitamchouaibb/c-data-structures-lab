@@ -1,0 +1,18 @@
+#ifndef ST_H
+#define ST_H
+
+#include "item.h"
+
+typedef struct symboltable *ST;
+
+ST STinit(int maxN);
+void STfree(ST st);
+int STcount(ST st);
+
+void STinsert(ST st, Item val);
+Item STsearch(ST st, Key k);
+Item STselect(ST st, int r);
+void STdelete(ST st, Key k);
+void STdisplay(ST st);
+
+#endif
