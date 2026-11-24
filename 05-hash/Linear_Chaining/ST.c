@@ -8,7 +8,7 @@ typedef struct STnode* link;
 struct STnode{ Item item; link next};
 
 struct symbtab{
-    link *heads;
+    link *heads; // LISTA CONCATENATA (AD OGNI COLLISIONE ESPANDO LA LISTA)
     int N;
     int M;
     link z;
@@ -27,7 +27,7 @@ static link NEW(Item item, link next){
 
 ST STinit(int maxN){
     int i,r;
-    
+
     ST st = malloc(sizeof(*st));
 
     if (st == NULL)
@@ -48,4 +48,107 @@ ST STinit(int maxN){
         st->heads[i] = st->z;
     }
     return st;
+}
+
+static int STsizeSet(int maxN, int r){
+    int primes[16] = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53};
+    int i = 0, avlength;
+    avlength = maxN / r;
+    if (maxN < primes[15])
+    {
+        for ( i = 0; i < 16; i++)
+        {
+            if (avlength <= primes[i])
+            {
+                return primes[i];
+            }
+            
+        }
+        
+    } else
+        printf("Too many entries ! \n");
+    return -1;
+    
+}
+
+void STfree(ST st){
+    int i;
+    link t,u;
+    for ( i = 0; i < st->M; i++)
+    {
+        for (t = st->heads[i]; t != st->z; t=u)
+        {
+            u = t->next;
+            free(t);
+        }
+        
+    }
+    free(st->heads);
+    free(st);
+    
+}
+
+int STcount(ST st){
+    return st->N;
+}
+
+int STempty(ST st){
+    if (STcount(st)==0)
+    {
+        return 1;
+    }
+    return 0;
+    
+}
+
+static int hash(Key v,int M){
+    int h = 0,base = 127;
+    for( ; *v != '\0';v++){
+        h = (base * h + *v)%M;
+    }
+    return h;
+}
+
+void STinsert(ST st, Item val){
+    int i;
+    i = hash(KEYget(&val),st->M);
+    st->heads[i] = NEW(val,st->heads[i]);
+    st->N++;
+}
+
+Item searchR(link t, Key k, link z){
+    if (t==z)
+    {
+        return ITEMsetNull();
+    }
+    if (KEYcmp(KEYget(&t->item), k ) == 0)
+    {
+        return t->item;
+    }
+    return searchR(t->next,k,z);
+}
+
+Item STsearch(ST st, Key k){
+    return searchR(st->heads[hash(k,st->M)],k,st->z);
+}
+
+void visitR(link h,link z){
+    if (h==z)
+    {
+        return;
+    }
+    ITEMstore(h->item);
+    visitR(h->next,z);
+    
+}
+
+void STdisplay(ST st){
+    int i;
+    for ( i = 0; i < st->M; i++)
+    {
+        printf("st[%d] : \n",i);
+        visitR(st->heads[i], st->z);
+        printf("\n");
+    }
+    
 }
