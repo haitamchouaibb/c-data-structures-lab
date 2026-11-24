@@ -181,7 +181,7 @@ static link insertR(link h,link p, link z,Item item){
     
 }
 
-void BSTinsert_leafR(BST bst, Item item){
+void BSTinsert_leafR(BST bst, Item item){ // Recursive insert
     if (bst == NULL || item == NULL)
     {
         return;
@@ -195,7 +195,7 @@ void BSTinsert_leafR(BST bst, Item item){
     
 }
 
-void BSTinsert_leafI(BST bst, Item item){
+void BSTinsert_leafI(BST bst, Item item){ // Iterative insert
     if (bst == NULL || item == NULL)
     {
         return ;
@@ -284,8 +284,8 @@ void BSTvisit(BST bst, int strategy){
 }
 
 static link rotR(link h, link z){
-    link x = h->l;
-    link p = h->p;
+    link x = h->l; // Nodo x = nodo sinistro del nodo corrente
+    link p = h->p; // Nodo p = Padre del nodo corrente
 
     h->l = x->r;
 
@@ -324,4 +324,23 @@ static link rotL(link h, link z) {
 
     return x;
     
+}
+
+static link insertT(link h,Item x,link z){
+    if (h == z)
+    {
+        return NEW(x,z,z,z);
+    }
+    if (KEYcompare(KEYget(x),KEYget(h->item)) == -1)
+    {
+        h->l = insertT(h->l,x,z); h = rotR(h,z);
+    } else {
+        h->r = insertT(h->r,x,z); h = rotL(h,z);
+    }
+    return h;
+
+}
+
+void BSTinsert_root(BST bst,Item x){
+    bst->root = inserT(bst->root,x,bst->z);
 }

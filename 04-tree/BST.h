@@ -16,6 +16,7 @@ Item BSTmin(BST bst);
 Item BSTmax(BST bst);
 
 void BSTinsert_leafR(BST bst, Item item);
+void BSTinsert_root(BST bst, Item item);
 
 void BSTvisit(BST bst);
 
